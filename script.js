@@ -218,50 +218,67 @@ function startMemoryJourney() {
     // First scroll to the gallery section
     gallery.scrollIntoView({ behavior: 'smooth' });
     
-    // Start auto-scrolling after a short delay
+    // Start auto-scrolling after a longer delay for mobile
     setTimeout(() => {
         startAutoScroll();
-    }, 1000);
+    }, 1500);
 }
 
-// Auto scroll function
+// Auto scroll function - works on both desktop and mobile
 function startAutoScroll() {
     if (isAutoScrolling) return;
     isAutoScrolling = true;
     
-    const scrollSpeed = 1; // pixels per frame (slow romantic scroll)
+    // Use setInterval for better mobile compatibility
+    const scrollSpeed = 2; // pixels per interval
+    const intervalTime = 30; // milliseconds
     
-    function autoScroll() {
-        if (!isAutoScrolling) return;
+    autoScrollInterval = setInterval(() => {
+        if (!isAutoScrolling) {
+            clearInterval(autoScrollInterval);
+            return;
+        }
         
-        window.scrollBy(0, scrollSpeed);
+        // Smooth scroll increment
+        window.scrollBy({
+            top: scrollSpeed,
+            behavior: 'instant'
+        });
         
         // Check if we've reached the bottom of the gallery
         const gallery = document.getElementById('gallery');
         const galleryBottom = gallery.offsetTop + gallery.offsetHeight;
-        const scrollPosition = window.scrollY + window.innerHeight;
+        const scrollPosition = window.pageYOffset + window.innerHeight;
         
-        if (scrollPosition >= galleryBottom) {
+        if (scrollPosition >= galleryBottom - 50) {
             stopAutoScroll();
-            return;
         }
-        
-        autoScrollInterval = requestAnimationFrame(autoScroll);
-    }
-    
-    autoScroll();
+    }, intervalTime);
     
     // Stop auto-scroll on user interaction
-    const stopEvents = ['wheel', 'touchstart', 'mousedown', 'keydown'];
+    addStopListeners();
+}
+
+function addStopListeners() {
+    const stopEvents = ['wheel', 'touchstart', 'touchmove', 'mousedown', 'keydown'];
+    
+    function handleStop() {
+        stopAutoScroll();
+        // Remove all listeners after stopping
+        stopEvents.forEach(event => {
+            window.removeEventListener(event, handleStop);
+        });
+    }
+    
     stopEvents.forEach(event => {
-        window.addEventListener(event, stopAutoScroll, { once: true, passive: true });
+        window.addEventListener(event, handleStop, { passive: true });
     });
 }
 
 function stopAutoScroll() {
     isAutoScrolling = false;
     if (autoScrollInterval) {
-        cancelAnimationFrame(autoScrollInterval);
+        clearInterval(autoScrollInterval);
         autoScrollInterval = null;
     }
 }
