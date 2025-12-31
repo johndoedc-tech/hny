@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#1a0a2e">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>Happy New Year, Stef! 💕</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Fireworks Canvas -->
+    <canvas id="fireworks"></canvas>
+    
+    <!-- Floating Hearts -->
+    <div class="hearts-container" id="hearts"></div>
+    
+    <!-- Landing Section -->
+    <section class="landing" id="landing">
+        <div class="landing-content">
+            <h1 class="main-title">Happy New Year</h1>
+            <div class="countdown" id="countdown">
+                <div class="time-block">
+                    <span id="days">00</span>
+                    <label>Days</label>
+                </div>
+                <div class="time-block">
+                    <span id="hours">00</span>
+                    <label>Hours</label>
+                </div>
+                <div class="time-block">
+                    <span id="minutes">00</span>
+                    <label>Minutes</label>
+                </div>
+                <div class="time-block">
+                    <span id="seconds">00</span>
+                    <label>Seconds</label>
+                </div>
+            </div>
+            <p class="subtitle">A little surprise filled with our beautiful memories together ✨</p>
+            <button class="explore-btn" onclick="scrollToGallery()">
+                <span>Explore Our Memories</span>
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M12 5v14M19 12l-7 7-7-7"/>
+                </svg>
+            </button>
+        </div>
+        <div class="scroll-indicator">
+            <div class="mouse"></div>
+        </div>
+    </section>
+
+    <!-- Love Letter Section -->
+    <section class="letter-section" id="letter">
+        <div class="envelope" onclick="openEnvelope()">
+            <div class="envelope-flap"></div>
+            <div class="envelope-body">
+                <div class="letter">
+                    <p>My Dearest Stef,</p>
+                    <p>As we step into another year together, I want you to know how grateful I am to have you in my life. Every moment with you is a treasure, every smile a gift.</p>
+                    <p>Here's to more adventures, more laughter, and more love in 2026!</p>
+                    <p class="signature">Forever yours 💕</p>
+                </div>
+            </div>
+            <p class="envelope-hint">Click to open 💌</p>
+        </div>
+    </section>
+
+    <!-- Photo Gallery Section -->
+    <section class="gallery-section" id="gallery">
+        <h2 class="section-title">Our Beautiful Memories 📸</h2>
+        <p class="section-subtitle">Click on any photo to view it larger</p>
+        
+        <div class="gallery-container" id="galleryContainer">
+            <!-- Photos will be dynamically loaded -->
+        </div>
+    </section>
+
+    <!-- Message Section -->
+    <section class="message-section">
+        <div class="message-content">
+            <h2>To Many More Years Together 🥂</h2>
+            <p>Every picture tells a story, and our story is my favorite. Thank you for being you, for being mine, and for making every day special.</p>
+            <div class="heart-beat">❤️</div>
+        </div>
+    </section>
+
+    <!-- Lightbox -->
+    <div class="lightbox" id="lightbox" onclick="closeLightbox()">
+        <button class="lightbox-close">&times;</button>
+        <button class="lightbox-prev" onclick="event.stopPropagation(); changeSlide(-1)">&#10094;</button>
+        <img src="" alt="Photo" id="lightboxImg">
+        <button class="lightbox-next" onclick="event.stopPropagation(); changeSlide(1)">&#10095;</button>
+        <div class="lightbox-counter"><span id="currentSlide">1</span> / <span id="totalSlides">1</span></div>
+    </div>
+
+    <!-- Background Music Toggle -->
+    <button class="music-toggle" id="musicToggle" onclick="toggleMusic()">
+        🎵
+    </button>
+    <audio id="bgMusic" loop>
+        <source src="music.mp3" type="audio/mpeg">
+    </audio>
+
+    <script src="script.js"></script>
+</body>
+</html>
