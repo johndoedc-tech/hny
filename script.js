@@ -47,6 +47,8 @@ const frameStyles = [
 
 let currentSlideIndex = 0;
 let isPlaying = false;
+let autoScrollInterval = null;
+let isAutoScrolling = false;
 
 // Initialize everything when DOM is loaded
 document.addEventListener('DOMContentLoaded', () => {
@@ -56,6 +58,7 @@ document.addEventListener('DOMContentLoaded', () => {
     initFireworks();
     createSparkles();
     initScrollAnimations();
+    createGatewayPetals();
 });
 
 // Countdown Timer
@@ -206,6 +209,81 @@ function openEnvelope() {
 // Scroll to Gallery
 function scrollToGallery() {
     document.getElementById('letter').scrollIntoView({ behavior: 'smooth' });
+}
+
+// Start Memory Journey - auto scroll through gallery
+function startMemoryJourney() {
+    const gallery = document.getElementById('gallery');
+    
+    // First scroll to the gallery section
+    gallery.scrollIntoView({ behavior: 'smooth' });
+    
+    // Start auto-scrolling after a short delay
+    setTimeout(() => {
+        startAutoScroll();
+    }, 1000);
+}
+
+// Auto scroll function
+function startAutoScroll() {
+    if (isAutoScrolling) return;
+    isAutoScrolling = true;
+    
+    const scrollSpeed = 1; // pixels per frame (slow romantic scroll)
+    
+    function autoScroll() {
+        if (!isAutoScrolling) return;
+        
+        window.scrollBy(0, scrollSpeed);
+        
+        // Check if we've reached the bottom of the gallery
+        const gallery = document.getElementById('gallery');
+        const galleryBottom = gallery.offsetTop + gallery.offsetHeight;
+        const scrollPosition = window.scrollY + window.innerHeight;
+        
+        if (scrollPosition >= galleryBottom) {
+            stopAutoScroll();
+            return;
+        }
+        
+        autoScrollInterval = requestAnimationFrame(autoScroll);
+    }
+    
+    autoScroll();
+    
+    // Stop auto-scroll on user interaction
+    const stopEvents = ['wheel', 'touchstart', 'mousedown', 'keydown'];
+    stopEvents.forEach(event => {
+        window.addEventListener(event, stopAutoScroll, { once: true, passive: true });
+    });
+}
+
+function stopAutoScroll() {
+    isAutoScrolling = false;
+    if (autoScrollInterval) {
+        cancelAnimationFrame(autoScrollInterval);
+        autoScrollInterval = null;
+    }
+}
+
+// Create Gateway Petals
+function createGatewayPetals() {
+    const container = document.getElementById('gatewayPetals');
+    if (!container) return;
+    
+    const petals = ['🌸', '🌺', '💮', '🏵️'];
+    
+    setInterval(() => {
+        const petal = document.createElement('div');
+        petal.className = 'petal';
+        petal.textContent = petals[Math.floor(Math.random() * petals.length)];
+        petal.style.left = Math.random() * 100 + '%';
+        petal.style.animationDuration = (6 + Math.random() * 4) + 's';
+        petal.style.fontSize = (1 + Math.random() * 0.8) + 'rem';
+        container.appendChild(petal);
+        
+        setTimeout(() => petal.remove(), 10000);
+    }, 800);
 }
 
 // Music Toggle
